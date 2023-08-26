@@ -22,13 +22,16 @@ class _ProduktScreenState extends State<ProduktScreen> {
   String? selectValue;
   bool isLoading = false;
   ProductsModel? productsModel;
+  ProductsModel? productsSearch;
   String? id;
   List<Product?> listproduct = [];
 
   Future<void> getProduct() async {
     isLoading = true;
     productsModel = await ProduktRepository().getProduckt();
+
     listproduct = productsModel!.products!;
+
     isLoading = false;
     setState(() {});
   }
@@ -97,59 +100,55 @@ class _ProduktScreenState extends State<ProduktScreen> {
               fontSize: 16.sp),
         ),
       ),
-      body: isLoading == true
-          ? const Center(child: CircularProgressIndicator())
-          : Column(
+      body: Column(
+        children: [
+          ScreenUtil().setVerticalSpacing(10),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                ScreenUtil().setVerticalSpacing(10),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                          child: TextFieldWidget(
-                        cursorHeight: 14,
-                        name: 'Search',
-                        icon: const Icon(CupertinoIcons.search),
-                        vertical: 8,
-                        onchaged: (value) async {},
-                      )),
-                      ScreenUtil().setHorizontalSpacing(10),
-                      Container(
-                        height: 40.h,
-                        width: 130.w,
-                        decoration: BoxDecoration(
-                            color: AppColors.blue,
-                            borderRadius: BorderRadius.circular(10.r)),
-                        child: MaterialButton(
-                          onPressed: () {
-                            Navigator.of(context)
-                                .pushNamed(AppRoutes.produckrAction);
-                          },
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.r)),
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Actions',
-                                style: TextStyle(
-                                    color: AppColors.white,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Icon(CupertinoIcons.chevron_compact_down,
-                                  color: AppColors.white)
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                ScreenUtil().setVerticalSpacing(10),
                 Expanded(
-                    child: RefreshIndicator(
+                    child: TextFieldWidget(
+                  cursorHeight: 20.h,
+                  name: 'Поиск..',
+                  icon: const Icon(CupertinoIcons.search),
+                  vertical: 8,
+                  onchaged: (value) async {
+                    productsSearch =
+                        await ProduktRepository().getSearchGl(id: value);
+                    listproduct = productsSearch!.products!;
+                    setState(() {});
+                  },
+                )),
+                ScreenUtil().setHorizontalSpacing(10),
+                Container(
+                  height: 40.h,
+                  width: 130.w,
+                  decoration: BoxDecoration(
+                      color: AppColors.blue,
+                      borderRadius: BorderRadius.circular(10.r)),
+                  child: MaterialButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(AppRoutes.produckrAction);
+                    },
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.r)),
+                    child: const Text(
+                      'Добавить',
+                      style: TextStyle(
+                          color: AppColors.white, fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+          ScreenUtil().setVerticalSpacing(10),
+          isLoading == true
+              ? const CircularProgressIndicator(color: AppColors.blue)
+              : Expanded(
+                  child: RefreshIndicator(
                   color: AppColors.blue,
                   onRefresh: () async {
                     await getProduct();
@@ -228,9 +227,9 @@ class _ProduktScreenState extends State<ProduktScreen> {
                     },
                   ),
                 )),
-                ScreenUtil().setVerticalSpacing(30),
-              ],
-            ),
+          ScreenUtil().setVerticalSpacing(100),
+        ],
+      ),
     );
   }
 }

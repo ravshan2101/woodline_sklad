@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:woodline_sklad/features/transfer_feature/data/transfered_getModel.dart';
 import 'package:woodline_sklad/features/transfer_feature/repository/transfered_repository.dart';
 
-enum TransferState { neytral, loading, loaded }
+enum TransferState { neytral, loading, loaded, listbosh }
 
 class TransferProvider extends ChangeNotifier {
   TransferState transferState = TransferState.neytral;
@@ -13,7 +13,17 @@ class TransferProvider extends ChangeNotifier {
     final transferedRepository = await TransferedRepository().getTranfery();
     list = transferedRepository!.products!;
     transferState = TransferState.loaded;
-    debugPrint("Isihladi provider___________${list.first!.orderId!}");
+    if (transferedRepository.products!.isEmpty) {
+      transferState = TransferState.listbosh;
+      debugPrint(transferedRepository.products!.length.toString());
+      notifyListeners();
+    }
+    notifyListeners();
+  }
+
+  Future getSearch(String id) async {
+    final trasferySearch = await TransferedRepository().getTranferySearch(id);
+    list = trasferySearch!.products!;
     notifyListeners();
   }
 }

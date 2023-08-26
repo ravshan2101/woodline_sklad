@@ -75,7 +75,7 @@ class ProductCardWidget extends StatelessWidget {
             const ConditionWidget(
                 icon: CupertinoIcons.exclamationmark_circle_fill,
                 color: Colors.orange,
-                text: ''),
+                text: 'Возврат'),
           ScreenUtil().setVerticalSpacing(5),
           TextWidgets(name: 'ID: ', id: id!),
           Container(
@@ -231,10 +231,17 @@ class ProductCardWidget extends StatelessWidget {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.r)),
               child: const Center(
-                child: Text(
-                  'Action',
-                  style: TextStyle(
-                      color: AppColors.white, fontWeight: FontWeight.bold),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Выбирать',
+                      style: TextStyle(
+                          color: AppColors.white, fontWeight: FontWeight.w600),
+                    ),
+                    Icon(CupertinoIcons.chevron_compact_down,
+                        color: AppColors.white)
+                  ],
                 ),
               ),
             ),

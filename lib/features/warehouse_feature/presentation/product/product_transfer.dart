@@ -55,7 +55,7 @@ class _ProduktTransferState extends State<ProduktTransfer> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'выбрать компанию',
+                    'Выбрать компанию',
                     style: TextStyle(
                         color: AppColors.black,
                         fontSize: 17.sp,
@@ -67,14 +67,14 @@ class _ProduktTransferState extends State<ProduktTransfer> {
                     width: double.infinity,
                     child: DropdownButton2(
                       barrierColor: Colors.grey.withOpacity(0.5),
-                      hint: const Text('Tanlang'),
+                      hint: const Text('Выбирать'),
                       value: selected,
                       items: List.generate(
                         sklad.length,
                         (index) => DropdownMenuItem(
                             value: sklad[index]!.id!,
                             child: Text(sklad[index]!.name == null
-                                ? "blllaaaa null ku"
+                                ? "Без имени"
                                 : sklad[index]!.name!)),
                       ),
                       onChanged: (value) {
@@ -154,7 +154,7 @@ class _ProduktTransferState extends State<ProduktTransfer> {
                             Fluttertoast.showToast(
                                 timeInSecForIosWeb: 1,
                                 gravity: ToastGravity.TOP,
-                                msg: 'sklad tanlang',
+                                msg: 'Выберите склад',
                                 textColor: AppColors.white,
                                 fontSize: 16,
                                 backgroundColor: Colors.red);

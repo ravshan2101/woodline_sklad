@@ -31,6 +31,7 @@ class _ProduktActionState extends State<ProduktAction> {
   List<ProductSearch?> result = [];
   ProductId? resultId;
   bool isValue = false;
+  bool isTrue = false;
   String? mebel;
   String? tissue;
   String? title;
@@ -71,10 +72,10 @@ class _ProduktActionState extends State<ProduktAction> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'введите ID заказа',
+                'Введите ID заказа',
                 style: TextStyle(
                     color: AppColors.black,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w600,
                     fontSize: 14.sp),
               ),
               ScreenUtil().setVerticalSpacing(10),
@@ -93,7 +94,7 @@ class _ProduktActionState extends State<ProduktAction> {
                         debugPrint("Malumot yoq");
                         isValue = true;
                         Fluttertoast.showToast(
-                            msg: "Id malumot tog'ri",
+                            msg: "Успешно",
                             toastLength: Toast.LENGTH_SHORT,
                             gravity: ToastGravity.BOTTOM,
                             timeInSecForIosWeb: 1,
@@ -106,7 +107,7 @@ class _ProduktActionState extends State<ProduktAction> {
                         print(value);
                         isValue = false;
                         Fluttertoast.showToast(
-                            msg: "Id malumot bazada bor",
+                            msg: "Такой ид уже существует ",
                             toastLength: Toast.LENGTH_SHORT,
                             gravity: ToastGravity.BOTTOM,
                             timeInSecForIosWeb: 1,
@@ -225,7 +226,7 @@ class _ProduktActionState extends State<ProduktAction> {
               ),
               ScreenUtil().setVerticalSpacing(10),
               Text(
-                'введите название ткани',
+                'Введите название ткани',
                 style: TextStyle(
                     color: AppColors.black,
                     fontWeight: FontWeight.w500,
@@ -287,7 +288,7 @@ class _ProduktActionState extends State<ProduktAction> {
 
                         Navigator.of(context).pushNamed(AppRoutes.home);
                         Fluttertoast.showToast(
-                            msg: "Malumot bazaga qoshildi",
+                            msg: "Добавлено в базу данных",
                             toastLength: Toast.LENGTH_SHORT,
                             gravity: ToastGravity.BOTTOM,
                             timeInSecForIosWeb: 1,

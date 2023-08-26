@@ -42,10 +42,11 @@ class _HomeScreenState extends State<HomeScreen> {
               gap: 8,
               padding: EdgeInsets.all(10.w),
               tabs: const [
-                GButton(icon: CupertinoIcons.asterisk_circle, text: 'Продукты'),
-                GButton(icon: CupertinoIcons.person, text: 'Трансферы'),
-                GButton(icon: CupertinoIcons.cart, text: 'Заявки'),
-                GButton(icon: CupertinoIcons.settings, text: 'Даставленные')
+                GButton(icon: CupertinoIcons.cube_box, text: 'Продукты'),
+                GButton(icon: Icons.transform_rounded, text: 'Трансферы'),
+                GButton(icon: Icons.checklist_outlined, text: 'Заявки'),
+                GButton(
+                    icon: Icons.delivery_dining_outlined, text: 'Даставленные')
               ],
               selectedIndex: selectIndex,
               onTabChange: (index) {

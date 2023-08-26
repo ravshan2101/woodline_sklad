@@ -66,8 +66,8 @@ class ChooseButton extends StatelessWidget {
         },
         color: AppColors.blue,
         child: const Text(
-          'Choose',
-          style: TextStyle(color: AppColors.white),
+          'Выбирать',
+          style: TextStyle(color: AppColors.white, fontWeight: FontWeight.w600),
         ),
       ),
     );

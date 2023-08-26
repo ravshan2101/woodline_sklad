@@ -33,7 +33,38 @@ class TransferedRepository {
 
       if (response.statusCode == 200) {
         transferedGetMd = TransferedGetMd.fromJson(response.data);
-        debugPrint(transferedGetMd.products!.first.orderId);
+
+        return transferedGetMd;
+      }
+    } on DioError catch (error) {
+      Fluttertoast.showToast(
+          timeInSecForIosWeb: 2,
+          gravity: ToastGravity.TOP,
+          msg: error.toString(),
+          textColor: AppColors.white,
+          fontSize: 16,
+          backgroundColor: AppColors.grey);
+      debugPrint('---------------------------------------$error-------');
+      return transferedGetMd;
+    }
+    return transferedGetMd;
+  }
+
+  Future<TransferedGetMd?> getTranferySearch(String id) async {
+    TransferedGetMd? transferedGetMd;
+    final token = await AuhtLocalData().getToken();
+
+    try {
+      Response response = await _dio!.get(
+          'http://64.226.90.160:3005/warehouse-products-by-status?status=TRANSFERED&search=$id',
+          options: Options(headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': "Bearer $token"
+          }));
+
+      if (response.statusCode == 200) {
+        transferedGetMd = TransferedGetMd.fromJson(response.data);
         return transferedGetMd;
       }
     } on DioError catch (error) {

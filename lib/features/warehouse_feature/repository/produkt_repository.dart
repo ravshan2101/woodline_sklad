@@ -9,7 +9,6 @@ import 'package:woodline_sklad/features/warehouse_feature/data/product_md.dart';
 import 'package:woodline_sklad/features/warehouse_feature/data/product_order_md.dart';
 import 'package:woodline_sklad/features/warehouse_feature/data/product_post_action_md.dart';
 import 'package:woodline_sklad/features/warehouse_feature/data/product_search_action_md.dart';
-import 'package:woodline_sklad/features/warehouse_feature/data/product_search_md.dart';
 import 'package:woodline_sklad/features/warehouse_feature/data/product_skladItems_md.dart';
 import 'package:woodline_sklad/features/warehouse_feature/data/product_skladTranfer_md.dart';
 
@@ -265,9 +264,9 @@ class ProduktRepository {
     return skladModel;
   }
 
-  Future<ProductSearchGl?> getSearchGl({required String id}) async {
+  Future<ProductsModel?> getSearchGl({required String id}) async {
     final token = await AuhtLocalData().getToken();
-    ProductSearchGl? productSearchGl;
+    ProductsModel? productSearchGl;
 
     try {
       Response response = await dio!.get(
@@ -278,8 +277,8 @@ class ProduktRepository {
           }));
 
       if (response.statusCode == 200) {
-        productSearchGl = ProductSearchGl.fromJson(response.data);
-        debugPrint(productSearchGl.products!.first.id);
+        productSearchGl = ProductsModel.fromJson(response.data);
+
         return productSearchGl;
       }
     } on DioError catch (error) {

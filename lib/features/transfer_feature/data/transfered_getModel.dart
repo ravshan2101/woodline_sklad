@@ -96,7 +96,7 @@ class Order {
   final String? sale;
   final String? title;
   final String? sum;
-  final Status? status;
+  final String? status;
   final Model? model;
 
   Order({
@@ -119,7 +119,7 @@ class Order {
         sale: json["sale"],
         title: json["title"],
         sum: json["sum"],
-        status: statusValues.map[json["status"]]!,
+        status: json["status"],
         model: json["model"] == null ? null : Model.fromJson(json["model"]),
       );
 
@@ -131,14 +131,14 @@ class Order {
         "sale": sale,
         "title": title,
         "sum": sum,
-        "status": statusValues.reverse[status],
+        "status": status,
         "model": model?.toJson(),
       };
 }
 
 class Model {
   final String? id;
-  final ModelName? name;
+  final String? name;
   final FurnitureType? furnitureType;
 
   Model({
@@ -149,7 +149,7 @@ class Model {
 
   factory Model.fromJson(Map<String, dynamic> json) => Model(
         id: json["id"],
-        name: modelNameValues.map[json["name"]],
+        name: json["name"],
         furnitureType: json["furniture_type"] == null
             ? null
             : FurnitureType.fromJson(json["furniture_type"]),
@@ -157,14 +157,14 @@ class Model {
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "name": modelNameValues.reverse[name],
+        "name": name,
         "furniture_type": furnitureType?.toJson(),
       };
 }
 
 class FurnitureType {
   final String? id;
-  final FurnitureTypeName? name;
+  final String? name;
 
   FurnitureType({
     this.id,
@@ -173,37 +173,11 @@ class FurnitureType {
 
   factory FurnitureType.fromJson(Map<String, dynamic> json) => FurnitureType(
         id: json["id"],
-        name: furnitureTypeNameValues.map[json["name"]],
+        name: json["name"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "name": furnitureTypeNameValues.reverse[name],
+        "name": name,
       };
-}
-
-enum FurnitureTypeName { EMPTY }
-
-final furnitureTypeNameValues =
-    EnumValues({"Диван Угловой": FurnitureTypeName.EMPTY});
-
-enum ModelName { EMPTY, NAME }
-
-final modelNameValues =
-    EnumValues({"Роксана": ModelName.EMPTY, "Оливия премиум": ModelName.NAME});
-
-enum Status { TRANSFERED }
-
-final statusValues = EnumValues({"TRANSFERED": Status.TRANSFERED});
-
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
-  }
 }
