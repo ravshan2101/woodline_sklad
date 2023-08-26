@@ -3,8 +3,8 @@ import 'package:woodline_sklad/app_const/app_page_animation.dart';
 import 'package:woodline_sklad/app_const/app_routes.dart';
 import 'package:woodline_sklad/features/auth_feature/presentation/screens/auth_page.dart';
 import 'package:woodline_sklad/features/warehouse_feature/presentation/homePages/home_page.dart';
-import 'package:woodline_sklad/features/warehouse_feature/presentation/homeScreens/product/product_actions.dart';
-import 'package:woodline_sklad/features/warehouse_feature/presentation/homeScreens/product/product_transfer.dart';
+import 'package:woodline_sklad/features/warehouse_feature/presentation/product/product_actions.dart';
+import 'package:woodline_sklad/features/warehouse_feature/presentation/product/product_transfer.dart';
 import 'package:woodline_sklad/features/warehouse_feature/presentation/homeScreens/zayavki.dart';
 
 abstract class AppPages {

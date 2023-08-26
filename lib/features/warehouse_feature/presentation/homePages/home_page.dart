@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:woodline_sklad/features/warehouse_feature/presentation/homeScreens/dastavleniya.dart';
-import 'package:woodline_sklad/features/warehouse_feature/presentation/homeScreens/product/product.dart';
-import 'package:woodline_sklad/features/warehouse_feature/presentation/homeScreens/transfery/transfery.dart';
+import 'package:woodline_sklad/features/warehouse_feature/presentation/product/product.dart';
+import 'package:woodline_sklad/features/transfer_feature/presentation/screens/transfery.dart';
 import 'package:woodline_sklad/features/warehouse_feature/presentation/homeScreens/zayavki.dart';
 
 import '../../../../app_const/app_colors.dart';
@@ -22,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
     const ProduktScreen(),
     const TranferyScreen(),
     const ZayavkiScreen(),
-    const DastavleniyaScreen(),
+    const Dastavleniya(),
   ];
   @override
   Widget build(BuildContext context) {

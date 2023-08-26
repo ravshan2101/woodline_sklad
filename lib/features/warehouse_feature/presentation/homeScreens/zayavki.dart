@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:woodline_sklad/app_const/app_colors.dart';
-import 'package:woodline_sklad/features/warehouse_feature/presentation/homeScreens/product/product_widgets/text_widgets.dart';
+import 'package:woodline_sklad/features/warehouse_feature/presentation/product/product_widgets/text_widgets.dart';
 import 'package:woodline_sklad/src/widgets/text_field_widget.dart';
 
 class ZayavkiScreen extends StatelessWidget {
