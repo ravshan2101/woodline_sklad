@@ -7,6 +7,7 @@ import 'package:woodline_sklad/features/transfer_feature/presentation/provider/t
 import 'package:woodline_sklad/features/transfer_feature/presentation/widgets/choosButton.dart';
 import 'package:woodline_sklad/features/warehouse_feature/presentation/product/product_widgets/text_widgets.dart';
 import 'package:woodline_sklad/features/warehouse_feature/repository/produkt_repository.dart';
+import 'package:woodline_sklad/src/widgets/appbar_widget.dart';
 import 'package:woodline_sklad/src/widgets/text_field_widget.dart';
 
 class TranferyScreen extends StatefulWidget {
@@ -32,42 +33,34 @@ class _TranferyScreenState extends State<TranferyScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        backgroundColor: AppColors.white,
-        surfaceTintColor: AppColors.white,
-        automaticallyImplyLeading: false,
-        title: Text(
-          'Трансферы',
-          style: TextStyle(
-              color: AppColors.black,
-              fontWeight: FontWeight.bold,
-              fontSize: 16.sp),
-        ),
-      ),
-      body: Column(children: [
-        ScreenUtil().setVerticalSpacing(10),
-        Padding(
+      backgroundColor: AppColors.white,
+      appBar: AppbarWidget(
+        appbarBottom: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
           child: TextFieldWidget(
             cursorHeight: 20.h,
             name: 'Поиск..',
             icon: const Icon(CupertinoIcons.search),
             vertical: 8,
-            onchaged: (value) async {
+            onchaged: (value) {
               data.getSearch(value);
             },
           ),
         ),
+        title: 'Трансферы',
+        isbottomHas: true,
+      ),
+      body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         if (data.transferState == TransferState.listbosh)
-          Text('Нет информации',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 20.sp))
+          Center(
+            child: Text('Нет информации',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 20.sp)),
+          )
         else if (data.transferState == TransferState.loading)
-          const CircularProgressIndicator(color: AppColors.blue)
+          const Center(child: CircularProgressIndicator(color: AppColors.blue))
         else if (data.transferState == TransferState.loaded)
           Expanded(
               child: RefreshIndicator(
@@ -111,7 +104,7 @@ class _TranferyScreenState extends State<TranferyScreen> {
                                 id: data.list[index]!.order!.cost!.toString()),
                             TextWidgets(
                                 name: 'РАСПРОДАЖА: ',
-                                id: '${data.list[index]!.order!.sale.toString()} %'),
+                                id: '${double.parse(data.list[index]!.order!.sale!).toStringAsFixed(2)} %'),
                             TextWidgets(
                                 name: 'ЗАГОЛОВОК: ',
                                 id: data.list[index]!.order!.title.toString()),

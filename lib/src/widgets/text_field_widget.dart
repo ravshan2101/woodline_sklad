@@ -15,23 +15,22 @@ class TextFieldWidget extends StatelessWidget {
   final bool isBigTextfield;
   final TextInputType? keyboardType;
   final int? maxLength;
-  final Color? color;
 
-  const TextFieldWidget(
-      {super.key,
-      this.name,
-      this.icon,
-      this.cursorHeight,
-      this.fontsize = 15,
-      this.textEditingController,
-      this.onchaged,
-      this.valueChanged,
-      this.validator,
-      required this.vertical,
-      this.isBigTextfield = false,
-      this.keyboardType,
-      this.maxLength,
-      this.color});
+  const TextFieldWidget({
+    super.key,
+    this.name,
+    this.icon,
+    this.cursorHeight,
+    this.fontsize = 15,
+    this.textEditingController,
+    this.onchaged,
+    this.valueChanged,
+    this.validator,
+    required this.vertical,
+    this.isBigTextfield = false,
+    this.keyboardType,
+    this.maxLength,
+  });
 
   @override
   Widget build(BuildContext context) {

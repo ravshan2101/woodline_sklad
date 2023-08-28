@@ -168,7 +168,7 @@ class ProduktRepository {
       "title": title,
       "cost": 0,
       "sale": 0,
-      "qty": 0,
+      "qty": 1,
       "sum": 0,
       "model_id": idModel
     };

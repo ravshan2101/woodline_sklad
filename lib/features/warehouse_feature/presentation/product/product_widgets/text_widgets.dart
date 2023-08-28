@@ -31,7 +31,7 @@ class TextWidgets extends StatelessWidget {
               id,
               textAlign: TextAlign.end,
               style: const TextStyle(
-                  color: AppColors.black, fontWeight: FontWeight.bold),
+                  color: AppColors.black, fontWeight: FontWeight.w700),
               overflow: TextOverflow.ellipsis,
             ),
           ),

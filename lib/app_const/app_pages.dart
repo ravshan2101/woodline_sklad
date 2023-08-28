@@ -5,7 +5,7 @@ import 'package:woodline_sklad/features/auth_feature/presentation/screens/auth_p
 import 'package:woodline_sklad/features/warehouse_feature/presentation/homePages/home_page.dart';
 import 'package:woodline_sklad/features/warehouse_feature/presentation/product/product_actions.dart';
 import 'package:woodline_sklad/features/warehouse_feature/presentation/product/product_transfer.dart';
-import 'package:woodline_sklad/features/warehouse_feature/presentation/homeScreens/zayavki.dart';
+import 'package:woodline_sklad/features/orders_feature/presentation/screens/zayavki.dart';
 
 abstract class AppPages {
   static Route<dynamic> generateRoute(RouteSettings settings) {

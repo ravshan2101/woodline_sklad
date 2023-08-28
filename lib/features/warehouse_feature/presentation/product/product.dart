@@ -8,6 +8,7 @@ import 'package:woodline_sklad/features/warehouse_feature/data/product_md.dart';
 
 import 'package:woodline_sklad/features/warehouse_feature/presentation/product/product_widgets/card_widget.dart';
 import 'package:woodline_sklad/features/warehouse_feature/repository/produkt_repository.dart';
+import 'package:woodline_sklad/src/widgets/appbar_widget.dart';
 
 import 'package:woodline_sklad/src/widgets/text_field_widget.dart';
 
@@ -46,7 +47,8 @@ class _ProduktScreenState extends State<ProduktScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
-      appBar: AppBar(
+      appBar: AppbarWidget(
+        title: 'Продукты',
         actions: [
           IconButton(
             onPressed: () {
@@ -88,17 +90,6 @@ class _ProduktScreenState extends State<ProduktScreen> {
             icon: const Icon(Icons.logout),
           )
         ],
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-        surfaceTintColor: AppColors.white,
-        backgroundColor: AppColors.white,
-        title: Text(
-          'Продукты',
-          style: TextStyle(
-              color: AppColors.black,
-              fontWeight: FontWeight.bold,
-              fontSize: 16.sp),
-        ),
       ),
       body: Column(
         children: [

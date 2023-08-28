@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:woodline_sklad/features/warehouse_feature/presentation/homeScreens/dastavleniya.dart';
+import 'package:woodline_sklad/features/delivery_feature/presentation/screens/dastavleniya.dart';
 import 'package:woodline_sklad/features/warehouse_feature/presentation/product/product.dart';
 import 'package:woodline_sklad/features/transfer_feature/presentation/screens/transfery.dart';
-import 'package:woodline_sklad/features/warehouse_feature/presentation/homeScreens/zayavki.dart';
+import 'package:woodline_sklad/features/orders_feature/presentation/screens/zayavki.dart';
 
 import '../../../../app_const/app_colors.dart';
 

@@ -83,43 +83,43 @@ class ProductCardWidget extends StatelessWidget {
               height: 0.6,
               width: double.infinity,
               color: Colors.grey),
-          TextWidgets(name: 'МОДЕЛ: ', id: model!),
+          TextWidgets(name: 'Модел: ', id: model!),
           Container(
               margin: EdgeInsets.symmetric(horizontal: 5.w),
               height: 1,
               width: double.infinity,
               color: Colors.grey),
-          TextWidgets(name: 'КОЛ-ВО: ', id: quantity!),
+          TextWidgets(name: 'Кол-во: ', id: quantity!),
           Container(
               margin: EdgeInsets.symmetric(horizontal: 5.w),
               height: 1,
               width: double.infinity,
               color: Colors.grey),
-          TextWidgets(name: 'ТКАНЬ: ', id: tissue!),
+          TextWidgets(name: 'Ткань: ', id: tissue!),
           Container(
               margin: EdgeInsets.symmetric(horizontal: 5.w),
               height: 1,
               width: double.infinity,
               color: Colors.grey),
-          TextWidgets(name: 'ЦЕНА: ', id: cost!),
+          TextWidgets(name: 'Цена: ', id: cost!),
           Container(
               margin: EdgeInsets.symmetric(horizontal: 5.w),
               height: 1,
               width: double.infinity,
               color: Colors.grey),
-          TextWidgets(name: 'РАСПРОДАЖА: ', id: "${(sell)} %"),
+          TextWidgets(name: 'Распродажа: ', id: "${(sell)} %"),
           Container(
               margin: EdgeInsets.symmetric(horizontal: 5.w),
               height: 1,
               width: double.infinity,
               color: Colors.grey),
-          TextWidgets(name: 'ЗАГОЛОВОК: ', id: title!),
+          TextWidgets(name: 'Заголовок: ', id: title!),
           Container(
               margin: EdgeInsets.symmetric(horizontal: 5.w),
               height: 1,
               width: double.infinity,
               color: Colors.grey),
-          TextWidgets(name: 'СУММА: ', id: '$price сум'),
+          TextWidgets(name: 'Сумма: ', id: '$price сум'),
           ScreenUtil().setVerticalSpacing(10),
           Container(
             height: 40.h,
@@ -187,7 +187,8 @@ class ProductCardWidget extends StatelessWidget {
                                   )),
                           status == "DEFECTED" ||
                                   status == "SOLD_AND_CHECKED" ||
-                                  status == "DELIVERED"
+                                  status == "DELIVERED" ||
+                                  status == "RETURNED"
                               ? const SizedBox.shrink()
                               : TextButton(
                                   onPressed: onTabBrak,
@@ -207,7 +208,8 @@ class ProductCardWidget extends StatelessWidget {
                                   )),
                           status == "ACTIVE" ||
                                   status == "DEFECTED" ||
-                                  status == "DELIVERED"
+                                  status == "DELIVERED" ||
+                                  status == "RETURNED"
                               ? const SizedBox.shrink()
                               : TextButton(
                                   onPressed: onTabOtpvraka,
