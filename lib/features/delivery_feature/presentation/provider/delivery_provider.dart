@@ -14,12 +14,13 @@ class DeliveredProvider extends ChangeNotifier {
     final deliveredrepoSitory = await DeliveredRepository().getDelivered();
     deliveredGetList = deliveredrepoSitory!.products!;
     deliveredState = DeliveredState.loaded;
+    notifyListeners();
 
     if (deliveredGetList.isEmpty) {
       deliveredState = DeliveredState.listbosh;
+      debugPrint('list bosh');
       notifyListeners();
     }
-    notifyListeners();
   }
 
   Future<void> putDelivered(String id) async {
@@ -27,9 +28,9 @@ class DeliveredProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Future getSearch(String id) async {
-  //   final trasferySearch = await DeliveredRepository().;
-  //   deliveredGetList = trasferySearch!.products!;
-  //   notifyListeners();
-  // }
+  Future getSearch(String id) async {
+    final deliveredSearch = await DeliveredRepository().getDeleviredSearch(id);
+    deliveredGetList = deliveredSearch!.products!;
+    notifyListeners();
+  }
 }

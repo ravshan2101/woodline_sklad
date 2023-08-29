@@ -48,9 +48,11 @@ class ProductCardWidget extends StatelessWidget {
       width: double.infinity,
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(
-            color: AppColors.blue.withOpacity(0.2),
-            blurRadius: 20,
-            offset: const Offset(0, 0))
+          color: AppColors.blue.withOpacity(0.1),
+          spreadRadius: 5,
+          blurRadius: 7,
+          offset: const Offset(0, 3),
+        )
       ], color: AppColors.white, borderRadius: BorderRadius.circular(10.r)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,7 +73,7 @@ class ProductCardWidget extends StatelessWidget {
                 icon: CupertinoIcons.info_circle_fill,
                 color: Colors.blue,
                 text: 'К отправке'),
-          if (status == "DELIVERED")
+          if (status == "RETURNED")
             const ConditionWidget(
                 icon: CupertinoIcons.exclamationmark_circle_fill,
                 color: Colors.orange,
@@ -83,43 +85,43 @@ class ProductCardWidget extends StatelessWidget {
               height: 0.6,
               width: double.infinity,
               color: Colors.grey),
-          TextWidgets(name: 'Модел: ', id: model!),
+          TextWidgets(name: 'Модел', id: model!),
           Container(
               margin: EdgeInsets.symmetric(horizontal: 5.w),
-              height: 1,
+              height: 0.6,
               width: double.infinity,
               color: Colors.grey),
-          TextWidgets(name: 'Кол-во: ', id: quantity!),
+          TextWidgets(name: 'Кол-во', id: quantity!),
           Container(
               margin: EdgeInsets.symmetric(horizontal: 5.w),
-              height: 1,
+              height: 0.6,
               width: double.infinity,
               color: Colors.grey),
-          TextWidgets(name: 'Ткань: ', id: tissue!),
+          TextWidgets(name: 'Ткань', id: tissue!),
           Container(
               margin: EdgeInsets.symmetric(horizontal: 5.w),
-              height: 1,
+              height: 0.6,
               width: double.infinity,
               color: Colors.grey),
-          TextWidgets(name: 'Цена: ', id: cost!),
+          TextWidgets(name: 'Цена', id: cost!),
           Container(
               margin: EdgeInsets.symmetric(horizontal: 5.w),
-              height: 1,
+              height: 0.6,
               width: double.infinity,
               color: Colors.grey),
-          TextWidgets(name: 'Распродажа: ', id: "${(sell)} %"),
+          TextWidgets(name: 'Распродажа', id: "${(sell)} %"),
           Container(
               margin: EdgeInsets.symmetric(horizontal: 5.w),
-              height: 1,
+              height: 0.6,
               width: double.infinity,
               color: Colors.grey),
-          TextWidgets(name: 'Заголовок: ', id: title!),
+          TextWidgets(name: 'Заголовок', id: title!),
           Container(
               margin: EdgeInsets.symmetric(horizontal: 5.w),
-              height: 1,
+              height: 0.6,
               width: double.infinity,
               color: Colors.grey),
-          TextWidgets(name: 'Сумма: ', id: '$price сум'),
+          TextWidgets(name: 'Сумма', id: '$price сум'),
           ScreenUtil().setVerticalSpacing(10),
           Container(
             height: 40.h,
@@ -233,17 +235,10 @@ class ProductCardWidget extends StatelessWidget {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.r)),
               child: const Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Выбирать',
-                      style: TextStyle(
-                          color: AppColors.white, fontWeight: FontWeight.w600),
-                    ),
-                    Icon(CupertinoIcons.chevron_compact_down,
-                        color: AppColors.white)
-                  ],
+                child: Text(
+                  'Изменить',
+                  style: TextStyle(
+                      color: AppColors.white, fontWeight: FontWeight.w600),
                 ),
               ),
             ),

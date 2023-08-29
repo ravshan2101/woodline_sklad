@@ -14,14 +14,13 @@ class ZayavkiProvider extends ChangeNotifier {
     final zayavkirepoSitory = await ZayavkiRepository().getZayavki();
     zayavkiGetList = zayavkirepoSitory!.products!;
     zayavkiState = ZayavkiState.loaded;
+    notifyListeners();
 
     if (zayavkiGetList.isEmpty) {
       zayavkiState = ZayavkiState.listbosh;
       debugPrint(zayavkiGetList.toString());
       notifyListeners();
     }
-
-    notifyListeners();
   }
 
   Future<void> putZayavki(String id) async {

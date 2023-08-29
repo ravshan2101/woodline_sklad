@@ -49,4 +49,34 @@ class DeliveredRepository {
 
     return deliveredItems;
   }
+
+  Future<DeliveredModel?> getDeleviredSearch(String id) async {
+    final token = await AuhtLocalData().getToken();
+
+    DeliveredModel? deleviredGetModel;
+
+    try {
+      Response response = await dio!.get(
+          'http://64.226.90.160:3005/warehouse-products-by-status?status=DELIVERED&search=$id',
+          options: Options(headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token'
+          }));
+
+      if (response.statusCode == 200) {
+        deleviredGetModel = DeliveredModel.fromJson(response.data);
+        return deleviredGetModel;
+      }
+    } on DioError catch (error) {
+      Fluttertoast.showToast(
+          timeInSecForIosWeb: 2,
+          gravity: ToastGravity.TOP,
+          msg: error.toString(),
+          textColor: AppColors.white,
+          fontSize: 16,
+          backgroundColor: AppColors.grey);
+      debugPrint('---------------------------------------$error-------');
+    }
+    return deleviredGetModel;
+  }
 }

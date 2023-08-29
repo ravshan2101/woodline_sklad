@@ -19,7 +19,7 @@ class AppbarWidget extends StatelessWidget implements PreferredSize {
     return AppBar(
       bottom: isbottomHas
           ? PreferredSize(
-              preferredSize: const Size(double.infinity, 50),
+              preferredSize: const Size(double.infinity, 56),
               child: appbarBottom!)
           : null,
       actions: actions,
@@ -41,5 +41,5 @@ class AppbarWidget extends StatelessWidget implements PreferredSize {
   Widget get child => Container();
 
   @override
-  Size get preferredSize => Size(double.infinity, isbottomHas ? 106.h : 56.h);
+  Size get preferredSize => Size(double.infinity, isbottomHas ? 112.h : 56.h);
 }

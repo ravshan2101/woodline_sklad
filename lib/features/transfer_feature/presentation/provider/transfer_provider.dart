@@ -10,15 +10,17 @@ class TransferProvider extends ChangeNotifier {
 
   Future getTranfer() async {
     transferState = TransferState.loading;
-    final transferedRepository = await TransferedRepository().getTranfery();
+    TransferedGetMd? transferedRepository =
+        await TransferedRepository().getTranfery();
     list = transferedRepository!.products!;
     transferState = TransferState.loaded;
+    notifyListeners();
+
     if (transferedRepository.products!.isEmpty) {
       transferState = TransferState.listbosh;
       debugPrint(transferedRepository.products!.length.toString());
       notifyListeners();
     }
-    notifyListeners();
   }
 
   Future getSearch(String id) async {

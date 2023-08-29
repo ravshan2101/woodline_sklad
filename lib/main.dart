@@ -4,6 +4,8 @@ import 'package:woodline_sklad/features/auth_feature/presentation/screens/auth_p
 import 'package:woodline_sklad/features/delivery_feature/presentation/provider/delivery_provider.dart';
 import 'package:woodline_sklad/features/orders_feature/presentation/provider/zayavki_provider.dart';
 import 'package:woodline_sklad/features/transfer_feature/presentation/provider/transfer_provider.dart';
+import 'package:woodline_sklad/features/warehouse_feature/provider/choose_provider.dart';
+import 'package:woodline_sklad/features/warehouse_feature/provider/product_getProvider.dart';
 
 import 'app.dart';
 
@@ -14,7 +16,9 @@ void main() async {
     providers: [
       ChangeNotifierProvider(create: (_) => TransferProvider()),
       ChangeNotifierProvider(create: (_) => ZayavkiProvider()),
-      ChangeNotifierProvider(create: (_) => DeliveredProvider())
+      ChangeNotifierProvider(create: (_) => DeliveredProvider()),
+      ChangeNotifierProvider(create: (_) => ProductProvider()),
+      ChangeNotifierProvider(create: (_) => ChooseProvider())
     ],
     child: MyApp(
       savedToken: savedToken,

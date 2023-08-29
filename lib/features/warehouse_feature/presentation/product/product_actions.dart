@@ -7,7 +7,6 @@ import 'package:woodline_sklad/features/auth_feature/validator_auth/validators_a
 import 'package:woodline_sklad/features/warehouse_feature/data/product_id_md.dart';
 import 'package:woodline_sklad/features/warehouse_feature/data/product_md.dart';
 import 'package:woodline_sklad/features/warehouse_feature/data/product_search_action_md.dart';
-
 import 'package:woodline_sklad/features/warehouse_feature/repository/produkt_repository.dart';
 import 'package:woodline_sklad/src/widgets/text_field_widget.dart';
 
@@ -19,6 +18,12 @@ class ProduktAction extends StatefulWidget {
 }
 
 class _ProduktActionState extends State<ProduktAction> {
+  @override
+  void initState() {
+    getProducts();
+    super.initState();
+  }
+
   ProductsModel? productsModelItem;
 
   getProducts() async {
@@ -37,6 +42,7 @@ class _ProduktActionState extends State<ProduktAction> {
   String? title;
   String? idMebel;
   String? id;
+  int counter = 0;
 
   final idController = TextEditingController();
   final tkanController = TextEditingController();
@@ -48,21 +54,16 @@ class _ProduktActionState extends State<ProduktAction> {
   final GlobalKey<FormState> formKeyZagalovka = GlobalKey<FormState>();
 
   @override
-  void initState() {
-    getProducts();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: AppBar(
+        centerTitle: true,
         elevation: 0,
         backgroundColor: AppColors.white,
-        title: const Text(
+        title: Text(
           'Добавить продукт',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20.sp),
         ),
       ),
       body: SingleChildScrollView(
@@ -84,14 +85,9 @@ class _ProduktActionState extends State<ProduktAction> {
                 child: TextFieldWidget(
                   onchaged: (value) async {
                     if (value.length >= 6) {
-                      print(value.length);
                       resultId = await ProduktRepository().getID(value);
-                      print("${resultId.toString()}=======================");
                       if (resultId == null) {
-                        debugPrint(
-                            formKeyId.currentState!.validate().toString());
                         id = value;
-                        debugPrint("Malumot yoq");
                         isValue = true;
                         Fluttertoast.showToast(
                             msg: "Успешно",
@@ -104,7 +100,6 @@ class _ProduktActionState extends State<ProduktAction> {
 
                         setState(() {});
                       } else if (value == resultId!.orderId) {
-                        print(value);
                         isValue = false;
                         Fluttertoast.showToast(
                             msg: "Такой ид уже существует ",
@@ -156,7 +151,7 @@ class _ProduktActionState extends State<ProduktAction> {
                                     textEditingController:
                                         productSearchcontroller,
                                     vertical: 10,
-                                    name: 'Search',
+                                    name: 'Поиск..',
                                     onchaged: (value) async {
                                       result = await ProduktRepository()
                                           .getSearch(value);
@@ -279,14 +274,17 @@ class _ProduktActionState extends State<ProduktAction> {
                           formKeyId.currentState!.validate() &&
                           formKeyTkan.currentState!.validate() &&
                           formKeyZagalovka.currentState!.validate() &&
-                          mebel != null) {
+                          mebel != null &&
+                          counter == 0) {
                         await ProduktRepository().postProduct(
                             id: id!,
                             idModel: idMebel!,
                             tissue: tissue!,
                             title: title!);
-
-                        Navigator.of(context).pushNamed(AppRoutes.home);
+                        if (counter == 0) {
+                          Navigator.of(context).pushNamed(AppRoutes.home);
+                          counter++;
+                        }
                         Fluttertoast.showToast(
                             msg: "Добавлено в базу данных",
                             toastLength: Toast.LENGTH_SHORT,

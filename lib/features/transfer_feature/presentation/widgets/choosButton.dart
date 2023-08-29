@@ -28,6 +28,7 @@ class ChooseButton extends StatelessWidget {
             context: context,
             builder: (context) {
               return AlertDialog(
+                backgroundColor: AppColors.white,
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -66,7 +67,7 @@ class ChooseButton extends StatelessWidget {
         },
         color: AppColors.blue,
         child: const Text(
-          'Выбирать',
+          'Изменить',
           style: TextStyle(color: AppColors.white, fontWeight: FontWeight.w600),
         ),
       ),

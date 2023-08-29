@@ -24,14 +24,14 @@ class _TranferyScreenState extends State<TranferyScreen> {
     super.initState();
   }
 
+  Future _onRefresh() async {
+    await context.read<TransferProvider>().getTranfer();
+    return Future.delayed(const Duration(milliseconds: 300));
+  }
+
   @override
   Widget build(BuildContext context) {
     var data = Provider.of<TransferProvider>(context, listen: true);
-    Future _onRefresh() async {
-      await context.read<TransferProvider>().getTranfer();
-      return Future.delayed(const Duration(milliseconds: 300));
-    }
-
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: AppbarWidget(
@@ -71,46 +71,62 @@ class _TranferyScreenState extends State<TranferyScreen> {
                       itemBuilder: (context, index) {
                         return Container(
                           margin: EdgeInsets.symmetric(
-                              vertical: 8.h, horizontal: 20.w),
+                              vertical: 10.h, horizontal: 20.w),
                           padding: EdgeInsets.symmetric(
                               vertical: 10.h, horizontal: 10.w),
                           width: double.infinity,
                           decoration: BoxDecoration(
                               boxShadow: [
                                 BoxShadow(
-                                    color: AppColors.blue.withOpacity(0.2),
-                                    blurRadius: 20,
-                                    offset: const Offset(0, 0))
+                                  color: AppColors.blue.withOpacity(0.1),
+                                  spreadRadius: 5,
+                                  blurRadius: 7,
+                                  offset: const Offset(0, 3),
+                                )
                               ],
                               color: AppColors.white,
                               borderRadius: BorderRadius.circular(10.r)),
                           child: Column(children: [
                             TextWidgets(
                                 name: 'ID: ',
-                                id: data.list[index]!.order!.orderId!
-                                    .toString()),
+                                id: data.list[index]!.order!.orderId == null
+                                    ? "Нет информации"
+                                    : data.list[index]!.order!.orderId!),
                             TextWidgets(
-                                name: 'МОДЕЛ: ',
-                                id: data.list[index]!.order!.model!.name!),
+                                name: 'Модел',
+                                id: data.list[index]!.order!.model == null
+                                    ? "Нет информации"
+                                    : data.list[index]!.order!.model!.name!),
                             TextWidgets(
-                                name: 'КОЛ-ВО: ',
-                                id: data.list[index]!.order!.qty.toString()),
+                                name: 'Кол-во',
+                                id: data.list[index]!.order!.qty == null
+                                    ? "Нет информации"
+                                    : data.list[index]!.order!.qty.toString()),
                             TextWidgets(
-                                name: 'ТКАНЬ: ',
-                                id: data.list[index]!.order!.tissue!
-                                    .toString()),
+                                name: 'Ткань',
+                                id: data.list[index]!.order!.tissue == null
+                                    ? "Нет информации"
+                                    : data.list[index]!.order!.tissue!),
                             TextWidgets(
-                                name: 'ЦЕНА: ',
-                                id: data.list[index]!.order!.cost!.toString()),
+                                name: 'Цена',
+                                id: data.list[index]!.order!.cost == null
+                                    ? "Нет информации"
+                                    : data.list[index]!.order!.cost!),
                             TextWidgets(
-                                name: 'РАСПРОДАЖА: ',
-                                id: '${double.parse(data.list[index]!.order!.sale!).toStringAsFixed(2)} %'),
+                                name: 'Распродажа',
+                                id: data.list[index]!.order!.sale == null
+                                    ? "Нет информации"
+                                    : '${double.parse(data.list[index]!.order!.sale!).toStringAsFixed(2)} %'),
                             TextWidgets(
-                                name: 'ЗАГОЛОВОК: ',
-                                id: data.list[index]!.order!.title.toString()),
+                                name: 'Заголовок',
+                                id: data.list[index]!.order!.title == null
+                                    ? "Нет информации"
+                                    : data.list[index]!.order!.title!),
                             TextWidgets(
-                                name: 'СУММА: ',
-                                id: '${data.list[index]!.order!.sum.toString()} сум'),
+                                name: 'Сумма',
+                                id: data.list[index]!.order!.sum == null
+                                    ? "Нет информации"
+                                    : '${data.list[index]!.order!.sum} сум'),
                             ScreenUtil().setVerticalSpacing(10),
                             ChooseButton(
                               id: data.list[index]!.orderId!,

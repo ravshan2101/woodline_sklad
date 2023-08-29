@@ -270,7 +270,8 @@ class ProduktRepository {
 
     try {
       Response response = await dio!.get(
-          'http://64.226.90.160:3005/warehouse-products-search?search=$id',
+          // 'http://64.226.90.160:3005/warehouse-products-search?search=$id',
+          'http://64.226.90.160:3005/warehouse-products-by-status?status=PRODUCTS&search=$id',
           options: Options(headers: {
             'Content-Type': "application/json",
             'Authorization': 'Bearer $token'
