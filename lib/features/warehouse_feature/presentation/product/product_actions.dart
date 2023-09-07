@@ -25,9 +25,11 @@ class _ProduktActionState extends State<ProduktAction> {
   }
 
   ProductsModel? productsModelItem;
+  bool isLoading = false;
+  bool isMebel = false;
 
-  getProducts() async {
-    productsModelItem = await ProduktRepository().getProduckt();
+  Future getProducts() async {
+    productsModelItem = await ProduktRepository().getProduckt(1, 10);
     setState(() {});
   }
 
@@ -129,6 +131,7 @@ class _ProduktActionState extends State<ProduktAction> {
               GestureDetector(
                 onTap: () {
                   showModalBottomSheet(
+                    backgroundColor: AppColors.white,
                     isScrollControlled: true,
                     useSafeArea: true,
                     context: context,
@@ -212,7 +215,7 @@ class _ProduktActionState extends State<ProduktAction> {
                     padding: const EdgeInsets.all(8.0),
                     child: mebel == null
                         ? const Text(
-                            'Search',
+                            'Поиск..',
                             style: TextStyle(color: Colors.grey),
                           )
                         : Text(mebel.toString()),
@@ -263,46 +266,50 @@ class _ProduktActionState extends State<ProduktAction> {
               ScreenUtil().setVerticalSpacing(20),
               SizedBox(
                   width: double.infinity,
-                  child: MaterialButton(
-                    height: 50.h,
-                    onPressed: () async {
-                      formKeyId.currentState!.validate();
-                      formKeyTkan.currentState!.validate();
-                      formKeyZagalovka.currentState!.validate();
+                  child: AbsorbPointer(
+                    absorbing: isLoading,
+                    child: MaterialButton(
+                      height: 50.h,
+                      onPressed: () async {
+                        formKeyId.currentState!.validate();
+                        formKeyTkan.currentState!.validate();
+                        formKeyZagalovka.currentState!.validate();
+                        if (isValue == true &&
+                            formKeyId.currentState!.validate() &&
+                            formKeyTkan.currentState!.validate() &&
+                            formKeyZagalovka.currentState!.validate() &&
+                            mebel != null) {
+                          setState(() {
+                            isLoading = true;
+                          });
 
-                      if (isValue == true &&
-                          formKeyId.currentState!.validate() &&
-                          formKeyTkan.currentState!.validate() &&
-                          formKeyZagalovka.currentState!.validate() &&
-                          mebel != null &&
-                          counter == 0) {
-                        await ProduktRepository().postProduct(
-                            id: id!,
-                            idModel: idMebel!,
-                            tissue: tissue!,
-                            title: title!);
-                        if (counter == 0) {
-                          Navigator.of(context).pushNamed(AppRoutes.home);
-                          counter++;
+                          await ProduktRepository().postProduct(
+                              id: id!,
+                              idModel: idMebel!,
+                              tissue: tissue!,
+                              title: title!);
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              AppRoutes.home, (Route<dynamic> route) => false);
+
+                          Fluttertoast.showToast(
+                              msg: "Добавлено в базу данных",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.blue,
+                              textColor: Colors.white,
+                              fontSize: 16.0);
+
+                          debugPrint("Sucses");
                         }
-                        Fluttertoast.showToast(
-                            msg: "Добавлено в базу данных",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.BOTTOM,
-                            timeInSecForIosWeb: 1,
-                            backgroundColor: Colors.blue,
-                            textColor: Colors.white,
-                            fontSize: 16.0);
-
-                        debugPrint("Sucses");
-                      }
-                    },
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.r)),
-                    color: AppColors.blue,
-                    child: const Text(
-                      'Создавать',
-                      style: TextStyle(color: AppColors.white),
+                      },
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.r)),
+                      color: AppColors.blue,
+                      child: const Text(
+                        'Создавать',
+                        style: TextStyle(color: AppColors.white),
+                      ),
                     ),
                   )),
               ScreenUtil().setVerticalSpacing(20),

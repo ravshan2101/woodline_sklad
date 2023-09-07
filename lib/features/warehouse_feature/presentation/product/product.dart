@@ -1,10 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 import 'package:woodline_sklad/app_const/app_colors.dart';
 import 'package:woodline_sklad/app_const/app_routes.dart';
 import 'package:woodline_sklad/features/auth_feature/presentation/screens/auth_page.dart';
+import 'package:woodline_sklad/features/transfer_feature/presentation/provider/transfer_provider.dart';
+
+import 'package:woodline_sklad/features/warehouse_feature/data/product_md.dart';
 import 'package:woodline_sklad/features/warehouse_feature/presentation/product/product_widgets/card_widget.dart';
 import 'package:woodline_sklad/features/warehouse_feature/provider/product_getProvider.dart';
 import 'package:woodline_sklad/features/warehouse_feature/repository/produkt_repository.dart';
@@ -18,20 +22,20 @@ class ProduktScreen extends StatefulWidget {
 }
 
 class _ProduktScreenState extends State<ProduktScreen> {
+  final PagingController<int, Product> pagingController =
+      PagingController(firstPageKey: 1);
   @override
   void initState() {
-    context.read<ProductProvider>().getProduct();
-    super.initState();
-  }
+    final data = Provider.of<ProductProvider>(context, listen: false);
 
-  Future _onRefresh() async {
-    await context.read<ProductProvider>().getProduct();
-    return Future.delayed(const Duration(milliseconds: 300));
+    pagingController.addPageRequestListener((pageKey) {
+      data.fetchPage(pageKey, pagingController);
+    });
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final data = Provider.of<ProductProvider>(context, listen: true);
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: AppbarWidget(
@@ -43,15 +47,20 @@ class _ProduktScreenState extends State<ProduktScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                  child: TextFieldWidget(
-                cursorHeight: 20.h,
-                name: 'Поиск..',
-                icon: const Icon(CupertinoIcons.search),
-                vertical: 8,
-                onchaged: (value) {
-                  data.searchProduct(id: value);
-                },
-              )),
+                child: TextFieldWidget(
+                  cursorHeight: 20.h,
+                  name: 'Поиск..',
+                  icon: const Icon(CupertinoIcons.search),
+                  vertical: 8,
+                  onchaged: (value) async {
+                    final result =
+                        await ProduktRepository().getSearchGl(id: value);
+                    final newList = result!.products!;
+                    pagingController.itemList = newList;
+                    setState(() {});
+                  },
+                ),
+              ),
               ScreenUtil().setHorizontalSpacing(10),
               Container(
                 height: 40.h,
@@ -87,22 +96,19 @@ class _ProduktScreenState extends State<ProduktScreen> {
                     actions: [
                       TextButton(
                           onPressed: () async {
-                            Navigator.of(context)
-                                .pushReplacementNamed(AppRoutes.auth);
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                                AppRoutes.auth,
+                                (Route<dynamic> route) => false);
                             await AuhtLocalData().removeToken();
                           },
-                          child: const Text(
-                            'Выйти',
-                            style: TextStyle(color: AppColors.black),
-                          )),
+                          child: const Text('Выйти',
+                              style: TextStyle(color: AppColors.black))),
                       TextButton(
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        child: const Text(
-                          'Закрывать',
-                          style: TextStyle(color: AppColors.black),
-                        ),
+                        child: const Text('Закрывать',
+                            style: TextStyle(color: AppColors.black)),
                       )
                     ],
                   );
@@ -120,83 +126,81 @@ class _ProduktScreenState extends State<ProduktScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          if (data.productrState == ProductrState.listbosh)
-            Center(
-              child: Text('Нет информации',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 20.sp)),
-            )
-          else if (data.productrState == ProductrState.loading)
-            const Center(
-                child: CircularProgressIndicator(color: AppColors.blue))
-          else if (data.productrState == ProductrState.loaded)
-            Expanded(
-                child: RefreshIndicator(
-              color: AppColors.blue,
-              onRefresh: _onRefresh,
-              child: ListView.builder(
-                itemCount: data.listproduct.length,
-                itemBuilder: (context, index) {
-                  return ProductCardWidget(
-                    orderId: data.listproduct[index]!.orderId,
-                    whereHouseId: data.listproduct[index]!.warehouseId,
-                    status: data.listproduct[index]!.order!.status == null
-                        ? 'Нет информации'
-                        : data.listproduct[index]!.order!.status!,
-                    id: data.listproduct[index]!.order!.orderId == null
-                        ? 'Нет информации'
-                        : data.listproduct[index]!.order!.orderId.toString(),
-                    model: data.listproduct[index]!.order!.model == null
-                        ? 'Нет информации'
-                        : data.listproduct[index]!.order!.model!.name,
-                    quantity: data.listproduct[index]!.order!.qty == null
-                        ? 'Нет информации'
-                        : data.listproduct[index]!.order!.qty.toString(),
-                    tissue: data.listproduct[index]!.order!.tissue == null
-                        ? 'Нет информации'
-                        : data.listproduct[index]!.order!.tissue!,
-                    cost: data.listproduct[index]!.order!.cost == null
-                        ? 'Нет информации'
-                        : data.listproduct[index]!.order!.cost!,
-                    sell: data.listproduct[index]!.order!.sale == null
-                        ? "Нет информации"
-                        : double.parse(data.listproduct[index]!.order!.sale!)
-                            .toStringAsFixed(2)
-                            .toString(),
-                    title: data.listproduct[index]!.order!.title == null
-                        ? "Нет информации"
-                        : data.listproduct[index]!.order!.title!,
-                    price: data.listproduct[index]!.order!.sum == null
-                        ? "Нет информации"
-                        : data.listproduct[index]!.order!.sum!,
-                    onTab: () async {
-                      Navigator.of(context).pop();
-                      await ProduktRepository().putProduct(
-                          id: data.listproduct[index]!.orderId!,
-                          status: "ACTIVE");
-                      data.getProduct();
-                    },
-                    onTabBrak: () async {
-                      Navigator.of(context).pop();
-                      await ProduktRepository().putProduct(
-                          id: data.listproduct[index]!.orderId!,
-                          status: "DEFECTED");
-                      data.getProduct();
-                    },
-                    onTabOtpvraka: () async {
-                      Navigator.of(context).pop();
-                      await ProduktRepository().putProduct(
-                          id: data.listproduct[index]!.orderId!,
-                          status: "DELIVERED");
-                      data.getProduct();
-                    },
-                  );
-                },
-              ),
-            )),
-          ScreenUtil().setVerticalSpacing(100),
+          Expanded(
+              child: RefreshIndicator(
+            color: AppColors.blue,
+            onRefresh: () => Future.sync(() => pagingController.refresh()),
+            child: PagedListView(
+                pagingController: pagingController,
+                builderDelegate: PagedChildBuilderDelegate<Product>(
+                  animateTransitions: true,
+                  itemBuilder: (context, item, index) {
+                    return ProductCardWidget(
+                      orderId: item.orderId!,
+                      whereHouseId: item.warehouseId,
+                      status: item.order!.status == null
+                          ? 'Нет информации'
+                          : item.order!.status!,
+                      id: item.order!.orderId == null
+                          ? 'Нет информации'
+                          : item.order!.orderId.toString(),
+                      model: item.order!.model == null
+                          ? 'Нет информации'
+                          : item.order!.model!.name,
+                      quantity: item.order!.qty == null
+                          ? 'Нет информации'
+                          : item.order!.qty.toString(),
+                      tissue: item.order!.tissue == null
+                          ? 'Нет информации'
+                          : item.order!.tissue!,
+                      cost: item.order!.cost == null
+                          ? 'Нет информации'
+                          : item.order!.cost!,
+                      sell: item.order!.sale == null
+                          ? "Нет информации"
+                          : double.parse(item.order!.sale!)
+                              .toStringAsFixed(2)
+                              .toString(),
+                      title: item.order!.title == null
+                          ? "Нет информации"
+                          : item.order!.title!,
+                      price: item.order!.sum == null
+                          ? "Нет информации"
+                          : item.order!.sum!,
+                      onTab: () async {
+                        Navigator.of(context).pop();
+                        final updateActive = await ProduktRepository()
+                            .putProduct(id: item.orderId!, status: "ACTIVE");
+                        debugPrint(updateActive!.order!.orderId!);
+                        setState(() {
+                          pagingController.itemList![index] = updateActive;
+                        });
+                        debugPrint(updateActive.order!.status.toString() +
+                            item.order!.status.toString());
+                      },
+                      onTabBrak: () async {
+                        Navigator.of(context).pop();
+                        final updateActive = await ProduktRepository()
+                            .putProduct(id: item.orderId!, status: "DEFECTED");
+                        setState(() {
+                          pagingController.itemList![index] = updateActive!;
+                        });
+                      },
+                      onTabOtpvraka: () async {
+                        Navigator.of(context).pop();
+                        final updateActive = await ProduktRepository()
+                            .putProduct(id: item.orderId!, status: "DELIVERED");
+                        if (updateActive!.order!.status == "DELIVERED") {
+                          setState(() {
+                            pagingController.itemList!.removeAt(index);
+                          });
+                        }
+                      },
+                    );
+                  },
+                )),
+          )),
+          ScreenUtil().setVerticalSpacing(90),
         ],
       ),
     );

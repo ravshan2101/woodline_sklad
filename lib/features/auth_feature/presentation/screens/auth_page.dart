@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:woodline_sklad/app_const/app_colors.dart';
 import 'package:woodline_sklad/app_const/app_routes.dart';
@@ -19,17 +21,20 @@ class _AuthScreenState extends State<AuthScreen> {
   final authProvider = AuthService();
   final username = TextEditingController();
   final password = TextEditingController();
+
   final GlobalKey<FormState> formKeyUser = GlobalKey<FormState>();
   final GlobalKey<FormState> formKeyPassword = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.white,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            SizedBox(
+                height: 400.h, child: Lottie.asset('assets/animation/2.json')),
             Form(
               key: formKeyUser,
               child: TextFieldWidget(
@@ -90,6 +95,16 @@ class _AuthScreenState extends State<AuthScreen> {
                       Navigator.of(context)
                           .pushReplacementNamed(AppRoutes.home);
                       await AuhtLocalData().saveToken(authModel.token!.token!);
+                    }
+
+                    if (authModel == null) {
+                      Fluttertoast.showToast(
+                          timeInSecForIosWeb: 2,
+                          gravity: ToastGravity.TOP,
+                          msg: 'Информация не найдена',
+                          textColor: AppColors.white,
+                          fontSize: 16,
+                          backgroundColor: Colors.red);
                     }
                   }
 

@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 import 'package:woodline_sklad/app_const/app_colors.dart';
 import 'package:woodline_sklad/features/transfer_feature/presentation/provider/transfer_provider.dart';
 import 'package:woodline_sklad/features/transfer_feature/presentation/widgets/choosButton.dart';
+import 'package:woodline_sklad/features/transfer_feature/repository/transfered_repository.dart';
+
 import 'package:woodline_sklad/features/warehouse_feature/presentation/product/product_widgets/text_widgets.dart';
 import 'package:woodline_sklad/features/warehouse_feature/repository/produkt_repository.dart';
 import 'package:woodline_sklad/src/widgets/appbar_widget.dart';
@@ -18,20 +21,26 @@ class TranferyScreen extends StatefulWidget {
 }
 
 class _TranferyScreenState extends State<TranferyScreen> {
+  final PagingController<int, dynamic> pagingController =
+      PagingController(firstPageKey: 1);
+
   @override
   void initState() {
-    context.read<TransferProvider>().getTranfer();
+    final data = context.read<TransferProvider>();
+    pagingController.addPageRequestListener((pageKey) {
+      data.fetchPage(pageKey, pagingController);
+    });
     super.initState();
   }
 
-  Future _onRefresh() async {
-    await context.read<TransferProvider>().getTranfer();
-    return Future.delayed(const Duration(milliseconds: 300));
+  @override
+  void dispose() {
+    pagingController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    var data = Provider.of<TransferProvider>(context, listen: true);
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: AppbarWidget(
@@ -42,8 +51,12 @@ class _TranferyScreenState extends State<TranferyScreen> {
             name: 'Поиск..',
             icon: const Icon(CupertinoIcons.search),
             vertical: 8,
-            onchaged: (value) {
-              data.getSearch(value);
+            onchaged: (value) async {
+              final result =
+                  await TransferedRepository().getTranferySearch(value);
+              final newList = result!.products!;
+              pagingController.itemList = newList;
+              setState(() {});
             },
           ),
         ),
@@ -51,104 +64,107 @@ class _TranferyScreenState extends State<TranferyScreen> {
         isbottomHas: true,
       ),
       body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        if (data.transferState == TransferState.listbosh)
-          Center(
-            child: Text('Нет информации',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 20.sp)),
-          )
-        else if (data.transferState == TransferState.loading)
-          const Center(child: CircularProgressIndicator(color: AppColors.blue))
-        else if (data.transferState == TransferState.loaded)
-          Expanded(
-              child: RefreshIndicator(
-                  color: AppColors.blue,
-                  onRefresh: _onRefresh,
-                  child: ListView.builder(
-                      itemCount: data.list.length,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          margin: EdgeInsets.symmetric(
-                              vertical: 10.h, horizontal: 20.w),
-                          padding: EdgeInsets.symmetric(
-                              vertical: 10.h, horizontal: 10.w),
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: AppColors.blue.withOpacity(0.1),
-                                  spreadRadius: 5,
-                                  blurRadius: 7,
-                                  offset: const Offset(0, 3),
-                                )
-                              ],
-                              color: AppColors.white,
-                              borderRadius: BorderRadius.circular(10.r)),
-                          child: Column(children: [
-                            TextWidgets(
-                                name: 'ID: ',
-                                id: data.list[index]!.order!.orderId == null
-                                    ? "Нет информации"
-                                    : data.list[index]!.order!.orderId!),
-                            TextWidgets(
-                                name: 'Модел',
-                                id: data.list[index]!.order!.model == null
-                                    ? "Нет информации"
-                                    : data.list[index]!.order!.model!.name!),
-                            TextWidgets(
-                                name: 'Кол-во',
-                                id: data.list[index]!.order!.qty == null
-                                    ? "Нет информации"
-                                    : data.list[index]!.order!.qty.toString()),
-                            TextWidgets(
-                                name: 'Ткань',
-                                id: data.list[index]!.order!.tissue == null
-                                    ? "Нет информации"
-                                    : data.list[index]!.order!.tissue!),
-                            TextWidgets(
-                                name: 'Цена',
-                                id: data.list[index]!.order!.cost == null
-                                    ? "Нет информации"
-                                    : data.list[index]!.order!.cost!),
-                            TextWidgets(
-                                name: 'Распродажа',
-                                id: data.list[index]!.order!.sale == null
-                                    ? "Нет информации"
-                                    : '${double.parse(data.list[index]!.order!.sale!).toStringAsFixed(2)} %'),
-                            TextWidgets(
-                                name: 'Заголовок',
-                                id: data.list[index]!.order!.title == null
-                                    ? "Нет информации"
-                                    : data.list[index]!.order!.title!),
-                            TextWidgets(
-                                name: 'Сумма',
-                                id: data.list[index]!.order!.sum == null
-                                    ? "Нет информации"
-                                    : '${data.list[index]!.order!.sum} сум'),
-                            ScreenUtil().setVerticalSpacing(10),
-                            ChooseButton(
-                              id: data.list[index]!.orderId!,
-                              onPressedActive: () async {
-                                Navigator.of(context).pop();
-                                await ProduktRepository().putProduct(
-                                    id: data.list[index]!.orderId!,
-                                    status: 'ACTIVE');
-                                data.getTranfer();
-                              },
-                              onPressedDefected: () async {
-                                Navigator.of(context).pop();
-                                await ProduktRepository().putProduct(
-                                    id: data.list[index]!.orderId!,
-                                    status: 'DEFECTED');
-                                data.getTranfer();
-                              },
-                            ),
-                          ]),
-                        );
-                      }))),
-        ScreenUtil().setVerticalSpacing(100)
+        Expanded(
+            child: RefreshIndicator(
+                color: AppColors.blue,
+                onRefresh: () => Future(() => pagingController.refresh()),
+                child: PagedListView(
+                    pagingController: pagingController,
+                    builderDelegate: PagedChildBuilderDelegate<dynamic>(
+                        animateTransitions: true,
+                        itemBuilder: (context, item, index) {
+                          return Container(
+                            margin: EdgeInsets.symmetric(
+                                vertical: 10.h, horizontal: 20.w),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 10.h, horizontal: 10.w),
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppColors.blue.withOpacity(0.1),
+                                    spreadRadius: 5,
+                                    blurRadius: 7,
+                                    offset: const Offset(0, 3),
+                                  )
+                                ],
+                                color: AppColors.white,
+                                borderRadius: BorderRadius.circular(10.r)),
+                            child: Column(children: [
+                              TextWidgets(
+                                  name: 'ID: ',
+                                  id: item.order!.orderId == null
+                                      ? "Нет информации"
+                                      : item.order!.orderId!),
+                              TextWidgets(
+                                  name: 'Модел',
+                                  id: item.order!.model == null
+                                      ? "Нет информации"
+                                      : item.order!.model!.name!),
+                              TextWidgets(
+                                  name: 'Кол-во',
+                                  id: item.order!.qty == null
+                                      ? "Нет информации"
+                                      : item.order!.qty.toString()),
+                              TextWidgets(
+                                  name: 'Ткань',
+                                  id: item.order!.tissue == null
+                                      ? "Нет информации"
+                                      : item.order!.tissue!),
+                              TextWidgets(
+                                  name: 'Цена',
+                                  id: item.order!.cost == null
+                                      ? "Нет информации"
+                                      : item.order!.cost!),
+                              TextWidgets(
+                                  name: 'Распродажа',
+                                  id: item.order!.sale == null
+                                      ? "Нет информации"
+                                      : '${double.parse(item.order!.sale!).toStringAsFixed(2)} %'),
+                              TextWidgets(
+                                  name: 'Заголовок',
+                                  id: item.order!.title == null
+                                      ? "Нет информации"
+                                      : item.order!.title!),
+                              TextWidgets(
+                                  name: 'Сумма',
+                                  id: item.order!.sum == null
+                                      ? "Нет информации"
+                                      : '${item.order!.sum} сум'),
+                              ScreenUtil().setVerticalSpacing(10),
+                              ChooseButton(
+                                id: item.orderId!,
+                                onPressedActive: () async {
+                                  Navigator.of(context).pop();
+                                  final result = await ProduktRepository()
+                                      .putProduct(
+                                          id: item.orderId!, status: 'ACTIVE');
+                                  debugPrint(result!.order!.status!);
+                                  if (result.order!.status != "TRANSFERED") {
+                                    setState(() {
+                                      pagingController.itemList!
+                                          .removeAt(index);
+                                    });
+                                  }
+                                },
+                                onPressedDefected: () async {
+                                  Navigator.of(context).pop();
+                                  final result = await ProduktRepository()
+                                      .putProduct(
+                                          id: item.orderId!,
+                                          status: 'DEFECTED');
+                                  if (result!.order!.status != 'TRANSFERED') {
+                                    setState(() {
+                                      pagingController.itemList!
+                                          .removeAt(index);
+                                    });
+                                  }
+                                },
+                              ),
+                            ]),
+                          );
+                        })))),
+        ScreenUtil().setVerticalSpacing(80)
       ]),
     );
   }

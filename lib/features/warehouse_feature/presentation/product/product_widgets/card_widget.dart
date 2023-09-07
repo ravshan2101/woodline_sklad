@@ -58,7 +58,7 @@ class ProductCardWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (status == "ACTIVE")
+          if (status == "ACTIVE") 
             const ConditionWidget(
                 icon: CupertinoIcons.check_mark_circled_solid,
                 color: Colors.green,
@@ -144,7 +144,7 @@ class ProductCardWidget extends StatelessWidget {
                               ? const SizedBox.shrink()
                               : TextButton(
                                   onPressed: () {
-                                    Navigator.of(context).pushNamed(
+                                    Navigator.of(context).pushReplacementNamed(
                                         AppRoutes.produktTransfer,
                                         arguments: TransferM(
                                             id: id,
@@ -170,7 +170,8 @@ class ProductCardWidget extends StatelessWidget {
                                               fontSize: 16.sp)),
                                     ],
                                   )),
-                          status == "ACTIVE" || status == "SOLD_AND_CHECKED"
+                          status == "ACTIVE" ||
+                                  status == "SOLD_AND_CHECKED"
                               ? const SizedBox.shrink()
                               : TextButton(
                                   onPressed: onTab,

@@ -4,4 +4,5 @@ abstract class AppRoutes {
   static const String produktTransfer = 'prTranfer';
   static const String produckrAction = 'prAction';
   static const String zayavki = 'zayavki';
+  static const String transferscreen = 'tranferScreen';
 }

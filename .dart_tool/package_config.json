@@ -2,6 +2,12 @@
   "configVersion": 2,
   "packages": [
     {
+      "name": "archive",
+      "rootUri": "file:///Users/ravshan/.pub-cache/hosted/pub.dev/archive-3.3.7",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "args",
       "rootUri": "file:///Users/ravshan/.pub-cache/hosted/pub.dev/args-2.4.2",
       "packageUri": "lib/",
@@ -36,6 +42,18 @@
       "rootUri": "file:///Users/ravshan/.pub-cache/hosted/pub.dev/collection-1.17.2",
       "packageUri": "lib/",
       "languageVersion": "2.18"
+    },
+    {
+      "name": "convert",
+      "rootUri": "file:///Users/ravshan/.pub-cache/hosted/pub.dev/convert-3.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
+      "name": "crypto",
+      "rootUri": "file:///Users/ravshan/.pub-cache/hosted/pub.dev/crypto-3.0.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
     },
     {
       "name": "cupertino_icons",
@@ -92,6 +110,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "flutter_staggered_grid_view",
+      "rootUri": "file:///Users/ravshan/.pub-cache/hosted/pub.dev/flutter_staggered_grid_view-0.7.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "flutter_test",
       "rootUri": "file:///Users/ravshan/Downloads/flutter/packages/flutter_test",
       "packageUri": "lib/",
@@ -122,6 +146,18 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "infinite_scroll_pagination",
+      "rootUri": "file:///Users/ravshan/.pub-cache/hosted/pub.dev/infinite_scroll_pagination-4.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
+    },
+    {
+      "name": "js",
+      "rootUri": "file:///Users/ravshan/.pub-cache/hosted/pub.dev/js-0.6.7",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
       "name": "lints",
       "rootUri": "file:///Users/ravshan/.pub-cache/hosted/pub.dev/lints-2.1.1",
       "packageUri": "lib/",
@@ -132,6 +168,12 @@
       "rootUri": "file:///Users/ravshan/.pub-cache/hosted/pub.dev/logger-1.4.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
+    },
+    {
+      "name": "lottie",
+      "rootUri": "file:///Users/ravshan/.pub-cache/hosted/pub.dev/lottie-2.6.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
     },
     {
       "name": "matcher",
@@ -194,6 +236,12 @@
       "languageVersion": "2.18"
     },
     {
+      "name": "pointycastle",
+      "rootUri": "file:///Users/ravshan/.pub-cache/hosted/pub.dev/pointycastle-3.7.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
+    },
+    {
       "name": "provider",
       "rootUri": "file:///Users/ravshan/.pub-cache/hosted/pub.dev/provider-6.0.5",
       "packageUri": "lib/",
@@ -252,6 +300,12 @@
       "rootUri": "file:///Users/ravshan/Downloads/flutter/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
       "languageVersion": "3.0"
+    },
+    {
+      "name": "sliver_tools",
+      "rootUri": "file:///Users/ravshan/.pub-cache/hosted/pub.dev/sliver_tools-0.2.12",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "source_span",
@@ -326,7 +380,7 @@
       "languageVersion": "3.0"
     }
   ],
-  "generated": "2023-08-26T05:05:14.053983Z",
+  "generated": "2023-09-04T06:01:24.734553Z",
   "generator": "pub",
   "generatorVersion": "3.1.0"
 }

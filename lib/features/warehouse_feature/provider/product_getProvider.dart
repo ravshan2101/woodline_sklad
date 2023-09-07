@@ -5,26 +5,24 @@ import 'package:woodline_sklad/features/warehouse_feature/repository/produkt_rep
 enum ProductrState { neytral, loading, loaded, listbosh }
 
 class ProductProvider extends ChangeNotifier {
-  ProductrState productrState = ProductrState.neytral;
-
+  final int _pageSize = 10;
+  ProductsModel? newItems;
   List<Product?> listproduct = [];
 
-  Future<void> getProduct() async {
-    productrState = ProductrState.loading;
-    ProductsModel? productsModel = await ProduktRepository().getProduckt();
-    listproduct = productsModel!.products!;
-    productrState = ProductrState.loaded;
-    notifyListeners();
-
-    if (listproduct.isEmpty) {
-      productrState = ProductrState.listbosh;
+  Future<void> fetchPage(int pageKey, final pagingController) async {
+    try {
+      newItems = await ProduktRepository().getProduckt(pageKey, _pageSize);
+      listproduct = newItems!.products!;
       notifyListeners();
+      final isLastPage = listproduct.length < _pageSize;
+      if (isLastPage) {
+        pagingController.appendLastPage(listproduct);
+      } else {
+        final nextPageKey = pageKey + 1;
+        pagingController.appendPage(listproduct, nextPageKey);
+      }
+    } catch (error) {
+      pagingController.error = error;
     }
-  }
-
-  Future searchProduct({required String id}) async {
-    final productSearch = await ProduktRepository().getSearchGl(id: id);
-    listproduct = productSearch!.products!;
-    notifyListeners();
   }
 }

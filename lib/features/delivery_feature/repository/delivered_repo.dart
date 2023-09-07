@@ -18,13 +18,13 @@ class DeliveredRepository {
     dio = Dio(options);
   }
 
-  Future<DeliveredModel?> getDelivered() async {
+  Future<DeliveredModel?> getDelivered(int page, int limit) async {
     DeliveredModel? deliveredItems;
     final token = await AuhtLocalData().getToken();
 
     try {
       Response response = await dio!.get(
-          'http://64.226.90.160:3005/warehouse-products-by-status?status=DELIVERED',
+          'http://64.226.90.160:3005/warehouse-products-by-status?status=DELIVERED&page=$page&limit=$limit',
           options: Options(headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',

@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:woodline_sklad/app_const/app_colors.dart';
 import 'package:woodline_sklad/app_const/app_routes.dart';
+import 'package:woodline_sklad/features/warehouse_feature/presentation/homePages/home_page.dart';
 import 'package:woodline_sklad/features/warehouse_feature/presentation/product/product.dart';
 import 'package:woodline_sklad/features/warehouse_feature/presentation/product/product_widgets/text_widgets.dart';
 import 'package:woodline_sklad/features/warehouse_feature/provider/choose_provider.dart';
@@ -130,12 +131,14 @@ class _ProduktTransferState extends State<ProduktTransfer> {
                           color: AppColors.blue,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.r)),
-                          onPressed: () async {
+                          onPressed: () {
                             if (selected != null) {
-                              Navigator.of(context).pushNamed(AppRoutes.home);
-                              await ProduktRepository().putSklad(
+                              ProduktRepository().putSklad(
                                   orderId: args.orderId!,
                                   whereHouseId: selected!);
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                  AppRoutes.home,
+                                  (Route<dynamic> route) => false);
                             } else {
                               Fluttertoast.showToast(
                                   timeInSecForIosWeb: 1,

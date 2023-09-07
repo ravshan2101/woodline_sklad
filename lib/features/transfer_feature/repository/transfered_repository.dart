@@ -18,13 +18,13 @@ class TransferedRepository {
     _dio = Dio(option);
   }
 
-  Future<TransferedGetMd?> getTranfery() async {
+  Future<TransferedGetMd?> getTranfery(int page, int limit) async {
     TransferedGetMd? transferedGetMd;
     final token = await AuhtLocalData().getToken();
 
     try {
       Response response = await _dio!.get(
-          'http://64.226.90.160:3005/warehouse-products-by-status?status=TRANSFERED',
+          'http://64.226.90.160:3005/warehouse-products-by-status?status=TRANSFERED&page=$page&limit=$limit',
           options: Options(headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
@@ -33,7 +33,6 @@ class TransferedRepository {
 
       if (response.statusCode == 200) {
         transferedGetMd = TransferedGetMd.fromJson(response.data);
-
         return transferedGetMd;
       }
     } on DioError catch (error) {

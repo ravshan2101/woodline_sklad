@@ -18,14 +18,14 @@ class ZayavkiRepository {
     dio = Dio(option);
   }
 
-  Future<ZayavkiGetModel?> getZayavki() async {
+  Future<ZayavkiGetModel?> getZayavki(int page, int limit) async {
     final token = await AuhtLocalData().getToken();
 
     ZayavkiGetModel? zayavkiGetModel;
 
     try {
       Response response = await dio!.get(
-          'http://64.226.90.160:3005/warehouse-products-by-status',
+          'http://64.226.90.160:3005/warehouse-products-by-status?page=$page&limit=$limit',
           options: Options(headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer $token'

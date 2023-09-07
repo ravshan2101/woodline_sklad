@@ -14,6 +14,7 @@ import 'package:woodline_sklad/features/warehouse_feature/data/product_skladTran
 
 class ProduktRepository {
   Dio? dio;
+  List<Product?> list = [];
 
   ProduktRepository() {
     final options = BaseOptions(
@@ -25,13 +26,14 @@ class ProduktRepository {
     dio = Dio(options);
   }
 
-  Future<ProductsModel?> getProduckt() async {
+  Future<ProductsModel?> getProduckt(int page, int limit) async {
     ProductsModel? producktItems;
+
     final token = await AuhtLocalData().getToken();
 
     try {
       Response response = await dio!.get(
-          'http://64.226.90.160:3005/warehouse-products-by-status?status=PRODUCTS',
+          'http://64.226.90.160:3005/warehouse-products-by-status?status=PRODUCTS&page=$page&limit=$limit',
           options: Options(headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
@@ -40,9 +42,6 @@ class ProduktRepository {
 
       if (response.statusCode == 200) {
         producktItems = ProductsModel.fromJson(response.data);
-        // debugPrint(
-        //     "${producktItems.products!.first.order!.orderId}______________________id");
-        debugPrint(response.data.toString());
         return producktItems;
       }
     } on DioError catch (error) {
@@ -60,10 +59,10 @@ class ProduktRepository {
     return producktItems;
   }
 
-  Future<ProductsOrder?> putProduct(
+  Future<Product?> putProduct(
       {required String id, required String status}) async {
     final token = await AuhtLocalData().getToken();
-    ProductsOrder? productsOrder;
+    Product? productsOrder;
     try {
       Response response =
           await dio!.put('http://64.226.90.160:3005/order/$id?status=$status',
@@ -73,8 +72,9 @@ class ProduktRepository {
                 'Authorization': "Bearer $token"
               }));
       if (response.statusCode == 200 || response.statusCode == 201) {
-        productsOrder = ProductsOrder.fromJson(response.data);
-        debugPrint("${productsOrder.status}_________sta");
+        productsOrder = Product.fromJson(response.data);
+        debugPrint("${productsOrder.order!.status!}_________sta");
+        debugPrint(response.data.toString());
         return productsOrder;
       }
     } on DioError catch (error) {
@@ -86,6 +86,7 @@ class ProduktRepository {
           fontSize: 16,
           backgroundColor: AppColors.grey);
       debugPrint('---------------------------------------$error-------');
+      return productsOrder;
     }
     return productsOrder;
   }
