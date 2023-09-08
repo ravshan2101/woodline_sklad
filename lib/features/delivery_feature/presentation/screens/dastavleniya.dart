@@ -138,6 +138,11 @@ class _DastavleniyaState extends State<Dastavleniya> {
                                             : '${item.order!.sum.toString()} сум'),
                                     ScreenUtil().setVerticalSpacing(10),
                                     ReturnButon(
+                                        idModel: item.order!.orderId.toString(),
+                                        modelName:
+                                            item.order!.model.name.toString(),
+                                        tkanModel:
+                                            item.order!.tissue.toString(),
                                         id: item.orderId,
                                         onPressedActive: () async {
                                           Navigator.of(context).pop();
