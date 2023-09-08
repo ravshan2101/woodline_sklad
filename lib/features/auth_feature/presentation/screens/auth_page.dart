@@ -27,98 +27,105 @@ class _AuthScreenState extends State<AuthScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.white,
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.w),
-        child: Column(
-          children: [
-            SizedBox(
-                height: 400.h, child: Lottie.asset('assets/animation/2.json')),
-            Form(
-              key: formKeyUser,
-              child: TextFieldWidget(
-                valueChanged: (value) {
-                  formKeyUser.currentState!.validate();
-                },
-                validator: Validators.userName,
-                textEditingController: username,
-                name: 'Username',
-                cursorHeight: 20.h,
-                vertical: 15,
-              ),
-            ),
-            ScreenUtil().setVerticalSpacing(20),
-            Form(
-              key: formKeyPassword,
-              child: TextFieldWidget(
-                valueChanged: (value) {
-                  formKeyPassword.currentState!.validate();
-                },
-                validator: Validators.passwordString,
-                textEditingController: password,
-                name: 'Password',
-                cursorHeight: 20.h,
-                vertical: 15,
-              ),
-            ),
-            ScreenUtil().setVerticalSpacing(50),
-            Container(
-              height: 50.h,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(10.r)),
-              child: MaterialButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.r)),
-                onPressed: () async {
-                  final isValidateUser = formKeyUser.currentState!.validate();
-                  final isValidatePassword =
-                      formKeyPassword.currentState!.validate();
-
-                  if (isValidateUser && isValidatePassword) {
-                    if (authProvider.loginState == LoginState.loading) {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        },
-                      );
-                    }
-
-                    final authModel = await authProvider.login(
-                        username.text.trim(), password.text.trim());
-
-                    if (authModel != null) {
-                      Navigator.of(context)
-                          .pushReplacementNamed(AppRoutes.home);
-                      await AuhtLocalData().saveToken(authModel.token!.token!);
-                    }
-
-                    if (authModel == null) {
-                      Fluttertoast.showToast(
-                          timeInSecForIosWeb: 2,
-                          gravity: ToastGravity.TOP,
-                          msg: 'Информация не найдена',
-                          textColor: AppColors.white,
-                          fontSize: 16,
-                          backgroundColor: Colors.red);
-                    }
-                  }
-
-                  // Navigator.of(context).pushReplacementNamed(AppRoutes.home);
-                },
-                child: const Center(
-                  child: Text(
-                    'LOGIN',
-                    style: TextStyle(color: AppColors.white),
-                  ),
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.white,
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          child: Column(
+            children: [
+              SizedBox(
+                  height: 400.h,
+                  child: Lottie.asset('assets/animation/2.json')),
+              Form(
+                key: formKeyUser,
+                child: TextFieldWidget(
+                  valueChanged: (value) {
+                    formKeyUser.currentState!.validate();
+                  },
+                  validator: Validators.userName,
+                  textEditingController: username,
+                  name: 'Username',
+                  cursorHeight: 20.h,
+                  vertical: 15,
                 ),
               ),
-            )
-          ],
+              ScreenUtil().setVerticalSpacing(20),
+              Form(
+                key: formKeyPassword,
+                child: TextFieldWidget(
+                  valueChanged: (value) {
+                    formKeyPassword.currentState!.validate();
+                  },
+                  validator: Validators.passwordString,
+                  textEditingController: password,
+                  name: 'Password',
+                  cursorHeight: 20.h,
+                  vertical: 15,
+                ),
+              ),
+              ScreenUtil().setVerticalSpacing(50),
+              Container(
+                height: 50.h,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(10.r)),
+                child: MaterialButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.r)),
+                  onPressed: () async {
+                    final isValidateUser = formKeyUser.currentState!.validate();
+                    final isValidatePassword =
+                        formKeyPassword.currentState!.validate();
+
+                    if (isValidateUser && isValidatePassword) {
+                      if (authProvider.loginState == LoginState.loading) {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          },
+                        );
+                      }
+
+                      final authModel = await authProvider.login(
+                          username.text.trim(), password.text.trim());
+
+                      if (authModel != null) {
+                        Navigator.of(context)
+                            .pushReplacementNamed(AppRoutes.home);
+                        await AuhtLocalData()
+                            .saveToken(authModel.token!.token!);
+                      }
+
+                      if (authModel == null) {
+                        Fluttertoast.showToast(
+                            timeInSecForIosWeb: 2,
+                            gravity: ToastGravity.TOP,
+                            msg: 'Информация не найдена',
+                            textColor: AppColors.white,
+                            fontSize: 16,
+                            backgroundColor: Colors.red);
+                      }
+                    }
+
+                    // Navigator.of(context).pushReplacementNamed(AppRoutes.home);
+                  },
+                  child: const Center(
+                    child: Text(
+                      'LOGIN',
+                      style: TextStyle(color: AppColors.white),
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -131,9 +131,9 @@ class _ProduktTransferState extends State<ProduktTransfer> {
                           color: AppColors.blue,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.r)),
-                          onPressed: () {
+                          onPressed: () async {
                             if (selected != null) {
-                              ProduktRepository().putSklad(
+                              await ProduktRepository().putSklad(
                                   orderId: args.orderId!,
                                   whereHouseId: selected!);
                               Navigator.of(context).pushNamedAndRemoveUntil(
